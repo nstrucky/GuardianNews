@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <item
+        android:id="@+id/menu_item_us_news"
+        android:title="@string/us_news_title"
+        />
+
+    <item
+        android:id="@+id/menu_item_world_news"
+        android:title="@string/world_title"
+        />
+
+    <item
+        android:id="@+id/menu_item_business"
+        android:title="@string/business_title"
+        />
+
+    <item
+        android:id="@+id/menu_item_education"
+        android:title="@string/education_title"
+        />
+
+    <item
+        android:id="@+id/menu_item_culture"
+        android:title="@string/culture_title"
+        />
+
+    <item
+        android:id="@+id/menu_item_film"
+        android:title="@string/film_title"
+        />
+
+    <item
+        android:id="@+id/menu_item_artanddesign"
+        android:title="@string/artanddesign_title"
+        />
+
+</menu>
