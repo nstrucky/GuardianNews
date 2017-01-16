@@ -82,42 +82,34 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
 
             case R.id.menu_item_artanddesign:
-                Toast.makeText(this, "art and design", Toast.LENGTH_SHORT).show();
                 sectionId = getString(R.string.artanddesign);
                 break;
 
             case R.id.menu_item_business:
-                Toast.makeText(this, "business", Toast.LENGTH_SHORT).show();
                 sectionId = getString(R.string.business);
                 break;
 
             case R.id.menu_item_culture:
-                Toast.makeText(this, "culture", Toast.LENGTH_SHORT).show();
                 sectionId = getString(R.string.culture);
                 break;
 
             case R.id.menu_item_education:
-                Toast.makeText(this, "education", Toast.LENGTH_SHORT).show();
                 sectionId = getString(R.string.education);
                 break;
 
             case R.id.menu_item_film:
-                Toast.makeText(this, "film", Toast.LENGTH_SHORT).show();
                 sectionId = getString(R.string.film);
                 break;
 
             case R.id.menu_item_us_news:
-                Toast.makeText(this, "us news", Toast.LENGTH_SHORT).show();
                 sectionId = getString(R.string.us_news);
                 break;
 
             case R.id.menu_item_world_news:
-                Toast.makeText(this, "world news", Toast.LENGTH_SHORT).show();
                 sectionId = getString(R.string.world);
                 break;
 
             default:
-                Toast.makeText(this, "default", Toast.LENGTH_SHORT).show();
                 sectionId = getString(R.string.world);
                 break;
 

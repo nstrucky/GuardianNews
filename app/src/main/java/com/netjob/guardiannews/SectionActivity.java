@@ -4,6 +4,8 @@ import android.app.LoaderManager;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -27,9 +29,38 @@ public class SectionActivity extends AppCompatActivity implements LoaderManager.
         setContentView(R.layout.activity_section);
 
         mSectionId = getIntent().getExtras().getString(MainActivity.SECTION_ID_KEY);
-        getSupportActionBar().setTitle(getActivityTitleString(mSectionId));
+        if (mSectionId != null) {
+            getSupportActionBar().setTitle(getActivityTitleString(mSectionId));
+
+        }
+
+        if (savedInstanceState != null) {
+            startLoader(2);
+        } else {
+            startLoader(1);
+        }
+
+    }
 
 
+    private void startLoader(int loadMethod) {
+
+        switch (loadMethod) {
+
+            case 1:
+                ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+
+                if (networkInfo != null && networkInfo.isConnected() && networkInfo.isAvailable()) {
+                    getLoaderManager().initLoader(0, null, this);
+                }
+                break;
+
+            case 2:
+                getLoaderManager().restartLoader(0, null, this);
+                break;
+
+        }
 
     }
 

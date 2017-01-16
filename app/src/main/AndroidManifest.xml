@@ -25,7 +25,7 @@
 
 
         <activity android:name=".SectionActivity"
-            android:label="@string/activity_sections"
+            android:label="@string/section_title_default"
             android:parentActivityName=".MainActivity"
             >
         <meta-data
