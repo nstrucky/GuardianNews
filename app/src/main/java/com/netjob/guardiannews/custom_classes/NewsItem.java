@@ -21,7 +21,8 @@ public class NewsItem {
 
 
     public NewsItem(Bitmap thumbnailBitmap, Bitmap authorPhoto, String articleTitle,
-                    String articleUrl, String articleBody, String authorName, String publicationDate) {
+                    String articleUrl, String articleBody, String authorName, String publicationDate,
+                    String authorBio) {
 
         mThumbnailBitmap = thumbnailBitmap;
         mAuthorPhoto = authorPhoto;
@@ -30,6 +31,7 @@ public class NewsItem {
         mArticleUrl = articleUrl;
         mAuthorName = authorName;
         mPublicationDate = publicationDate;
+        mAuthorBio = authorBio;
 
     }
 
