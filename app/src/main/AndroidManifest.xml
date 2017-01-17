@@ -27,6 +27,7 @@
         <activity android:name=".SectionActivity"
             android:label="@string/section_title_default"
             android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="stateHidden"
             >
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"

@@ -9,9 +9,12 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ListView;
 
 import com.netjob.guardiannews.custom_classes.NewsItem;
+import com.netjob.guardiannews.custom_classes.NewsItemAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,12 +24,28 @@ import java.util.List;
 public class SectionActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<NewsItem>> {
 
 
+    ListView mNewsListView;
+    List<NewsItem> mNewsItems;
+    NewsItemAdapter mNewsItemAdapter;
     String mSectionId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_section);
+
+
+        mNewsListView = (ListView) findViewById(R.id.listview_sections);
+
+        mNewsItems = new ArrayList<>();
+        mNewsItems.add(new NewsItem(null, null, null, null, null, null, null));
+        mNewsItems.add(new NewsItem(null, null, null, null, null, null, null));
+        mNewsItems.add(new NewsItem(null, null, null, null, null, null, null));
+
+        mNewsItemAdapter = new NewsItemAdapter(this, mNewsItems);
+        mNewsListView.setAdapter(mNewsItemAdapter);
+
+
 
         mSectionId = getIntent().getExtras().getString(MainActivity.SECTION_ID_KEY);
         if (mSectionId != null) {
@@ -67,7 +86,7 @@ public class SectionActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public Loader<List<NewsItem>> onCreateLoader(int id, Bundle args) {
-        return null;
+        return new NewsLoader(this);
     }
 
     @Override

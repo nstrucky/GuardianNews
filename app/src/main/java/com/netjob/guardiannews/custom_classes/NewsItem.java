@@ -15,12 +15,13 @@ public class NewsItem {
     String mArticleBody;// fields --> body
     String mArticleUrl; //webUrl
     String mAuthorName; //fields --> byline
-//    String mAuthorBio; //tags --> bio
+    String mPublicationDate; //webPublicationDate
+    String mAuthorBio; //tags --> bio
 
 
 
     public NewsItem(Bitmap thumbnailBitmap, Bitmap authorPhoto, String articleTitle,
-                    String articleUrl, String articleBody, String authorName) {
+                    String articleUrl, String articleBody, String authorName, String publicationDate) {
 
         mThumbnailBitmap = thumbnailBitmap;
         mAuthorPhoto = authorPhoto;
@@ -28,6 +29,7 @@ public class NewsItem {
         mArticleBody = summarizeArticleBody(articleBody);
         mArticleUrl = articleUrl;
         mAuthorName = authorName;
+        mPublicationDate = publicationDate;
 
     }
 
@@ -35,7 +37,7 @@ public class NewsItem {
     private String summarizeArticleBody(String body) {
 
         //TODO create logic to cut string down to manageable size
-        return null;
+        return body;
     }
 
     public Bitmap getThumbnailBitmap() {
@@ -86,13 +88,21 @@ public class NewsItem {
         mAuthorName = authorName;
     }
 
-//    public String getmAuthorBio() {
-//        return mAuthorBio;
-//    }
-//
-//    public void setAuthorBio(String authorBio) {
-//        mAuthorBio = authorBio;
-//    }
+    public String getPublicationDate() {
+        return mPublicationDate;
+    }
+
+    public void setPublicationDate(String date) {
+        mPublicationDate = date;
+    }
+
+    public String getmAuthorBio() {
+        return mAuthorBio;
+    }
+
+    public void setAuthorBio(String authorBio) {
+        mAuthorBio = authorBio;
+    }
 
 
 }
