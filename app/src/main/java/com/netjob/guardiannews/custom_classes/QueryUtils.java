@@ -35,8 +35,10 @@ public class QueryUtils {
     private static final String PARAM_SECTION = "section";
     private static final String PARAM_ORDER_BY = "order-by";
     private static final String PARAM_SHOWFIELDS = "show-fields";
+    private static final String PARAM_SHOWTAGS = "show-tags";
     private static final String apiKey = "e73a902b-926f-478b-b828-10bb9d32c833";
     private static final String fieldsToInclude = "thumbnail,byline,bodyText";
+    private static final String tagsToInclude = "contributor";
 
     public static URL buildSectionUrl(String sectionId, String orderBy) {
 
@@ -46,6 +48,7 @@ public class QueryUtils {
                     .appendQueryParameter(PARAM_SECTION, sectionId)
                     .appendQueryParameter(PARAM_ORDER_BY, orderBy)
                     .appendQueryParameter(PARAM_SHOWFIELDS, fieldsToInclude)
+                    .appendQueryParameter(PARAM_SHOWTAGS, tagsToInclude)
                     .build();
 
         try {
@@ -164,24 +167,35 @@ public class QueryUtils {
 
             for (int i = 0; i < results.length(); i++) {
 
+                String authorPhotoUrl = null;
+                String authorBio = "";
+                Bitmap authorPhoto = null;
+
                 JSONObject newsItem = results.getJSONObject(i);
                 JSONObject fields = newsItem.getJSONObject("fields");
                 JSONArray tagsArray = newsItem.getJSONArray("tags");
-                JSONObject tags = tagsArray.getJSONObject(0);
+                if (tagsArray.length() > 0) {
+                    JSONObject tags = tagsArray.getJSONObject(0);
+                     authorPhotoUrl = tags.getString("bylineImageUrl");
+                     authorBio = tags.getString("bio");
+                }
+
 
                 String thumbnailString = fields.getString("thumbnail");
                 String articleBody = fields.getString("bodyText");
                 String authorName = fields.getString("byline");
 
-                String authorPhotoUrl = tags.getString("bylineImageUrl");
-                String authorBio = tags.getString("bio");
+
 
                 String articleTitle = newsItem.getString("webTitle");
                 String articleUrl = newsItem.getString("webUrl");
                 String publicationDate = newsItem.getString("webPublicationDate");
 
                 Bitmap thumbnail = getImageBitmap(thumbnailString);
-                Bitmap authorPhoto = getImageBitmap(authorPhotoUrl);
+                if (authorPhotoUrl != null) {
+                    authorPhoto = getImageBitmap(authorPhotoUrl);
+                }
+
 
                 NewsItem listNewsItem = new NewsItem(thumbnail, authorPhoto, articleTitle,
                         articleUrl, articleBody, authorName, publicationDate, authorBio);
@@ -201,6 +215,10 @@ public class QueryUtils {
         Bitmap imageBitmap = null;
         HttpURLConnection httpURLConnection = null;
         InputStream inputStream = null;
+
+        if (imageUrl == null) {
+            return null;
+        }
 
         try {
             URL url = new URL(imageUrl);

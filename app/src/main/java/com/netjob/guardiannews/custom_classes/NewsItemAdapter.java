@@ -54,7 +54,7 @@ public class NewsItemAdapter extends ArrayAdapter {
         viewHolder.mArticleTitleTextView.setText(currentNewsItem.getArticleTitle());
         viewHolder.mPublicationTextView.setText(currentNewsItem.getPublicationDate());
         viewHolder.mArticleBodyTextView.setText(currentNewsItem.getArticleBody());
-        viewHolder.mBioTextView.setText(currentNewsItem.getmAuthorBio());
+        viewHolder.mBioTextView.setText("TODO BIO HERE");
         viewHolder.mBylineTextView.setText(currentNewsItem.getAuthorName());
         viewHolder.mBylineImageView.setImageBitmap(currentNewsItem.getAuthorPhoto());
         viewHolder.mArticleThumbnailImageView.setImageBitmap(currentNewsItem.getThumbnailBitmap());
