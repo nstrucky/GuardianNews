@@ -90,7 +90,6 @@ public class QueryUtils {
         return url;
     }
 
-
     public static List<NewsItem> makeHttpUrlRequest(URL url) {
 
         HttpURLConnection httpURLConnection = null;
@@ -125,7 +124,6 @@ public class QueryUtils {
 
         return fetchNewsItemData(jsonToParse);
     }
-
 
     private static String readFromInputStream(InputStream inputStream) {
 
@@ -162,14 +160,14 @@ public class QueryUtils {
         List<NewsItem> newsItems = new ArrayList<>();
 
         try {
-            JSONArray results = new JSONObject(jsonToParse).getJSONArray("results");
-
+            JSONArray results = new JSONObject(jsonToParse).getJSONObject("response").getJSONArray("results");
 
             for (int i = 0; i < results.length(); i++) {
 
                 JSONObject newsItem = results.getJSONObject(i);
                 JSONObject fields = newsItem.getJSONObject("fields");
-                JSONObject tags = newsItem.getJSONArray("tags").getJSONObject(0);
+                JSONArray tagsArray = newsItem.getJSONArray("tags");
+                JSONObject tags = tagsArray.getJSONObject(0);
 
                 String thumbnailString = fields.getString("thumbnail");
                 String articleBody = fields.getString("bodyText");
@@ -181,7 +179,6 @@ public class QueryUtils {
                 String articleTitle = newsItem.getString("webTitle");
                 String articleUrl = newsItem.getString("webUrl");
                 String publicationDate = newsItem.getString("webPublicationDate");
-
 
                 Bitmap thumbnail = getImageBitmap(thumbnailString);
                 Bitmap authorPhoto = getImageBitmap(authorPhotoUrl);

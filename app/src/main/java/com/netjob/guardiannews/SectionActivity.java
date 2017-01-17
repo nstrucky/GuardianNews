@@ -13,7 +13,9 @@ import android.widget.ListView;
 
 import com.netjob.guardiannews.custom_classes.NewsItem;
 import com.netjob.guardiannews.custom_classes.NewsItemAdapter;
+import com.netjob.guardiannews.custom_classes.QueryUtils;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +29,7 @@ public class SectionActivity extends AppCompatActivity implements LoaderManager.
     ListView mNewsListView;
     List<NewsItem> mNewsItems;
     NewsItemAdapter mNewsItemAdapter;
-    String mSectionId;
+    static String mSectionId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,14 +40,9 @@ public class SectionActivity extends AppCompatActivity implements LoaderManager.
         mNewsListView = (ListView) findViewById(R.id.listview_sections);
 
         mNewsItems = new ArrayList<>();
-        mNewsItems.add(new NewsItem(null, null, null, null, null, null, null));
-        mNewsItems.add(new NewsItem(null, null, null, null, null, null, null));
-        mNewsItems.add(new NewsItem(null, null, null, null, null, null, null));
 
         mNewsItemAdapter = new NewsItemAdapter(this, mNewsItems);
         mNewsListView.setAdapter(mNewsItemAdapter);
-
-
 
         mSectionId = getIntent().getExtras().getString(MainActivity.SECTION_ID_KEY);
         if (mSectionId != null) {
@@ -53,11 +50,7 @@ public class SectionActivity extends AppCompatActivity implements LoaderManager.
 
         }
 
-        if (savedInstanceState != null) {
-            startLoader(2);
-        } else {
-            startLoader(1);
-        }
+        startLoader(1);
 
     }
 
@@ -90,7 +83,13 @@ public class SectionActivity extends AppCompatActivity implements LoaderManager.
     }
 
     @Override
-    public void onLoadFinished(Loader<List<NewsItem>> loader, List<NewsItem> data) {
+    public void onLoadFinished(Loader<List<NewsItem>> loader, List<NewsItem> newsItems) {
+
+        mNewsItemAdapter.clear();
+        if (newsItems != null) {
+            mNewsItemAdapter.addAll(newsItems);
+
+        }
 
     }
 
@@ -114,7 +113,8 @@ public class SectionActivity extends AppCompatActivity implements LoaderManager.
 
         @Override
         public List<NewsItem> loadInBackground() {
-            return null;
+            URL url = QueryUtils.buildSectionUrl(mSectionId, "newest");
+            return QueryUtils.makeHttpUrlRequest(url);
         }
     }
 

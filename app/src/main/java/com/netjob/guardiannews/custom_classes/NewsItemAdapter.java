@@ -31,6 +31,7 @@ public class NewsItemAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder = new ViewHolder();
+        NewsItem currentNewsItem = (NewsItem) getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_article, null, false);
@@ -49,6 +50,15 @@ public class NewsItemAdapter extends ArrayAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
 
         }
+
+        viewHolder.mArticleTitleTextView.setText(currentNewsItem.getArticleTitle());
+        viewHolder.mPublicationTextView.setText(currentNewsItem.getPublicationDate());
+        viewHolder.mArticleBodyTextView.setText(currentNewsItem.getArticleBody());
+        viewHolder.mBioTextView.setText(currentNewsItem.getmAuthorBio());
+        viewHolder.mBylineTextView.setText(currentNewsItem.getAuthorName());
+        viewHolder.mBylineImageView.setImageBitmap(currentNewsItem.getAuthorPhoto());
+        viewHolder.mArticleThumbnailImageView.setImageBitmap(currentNewsItem.getThumbnailBitmap());
+
 
 
         return convertView;
