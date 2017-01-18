@@ -1,7 +1,9 @@
 package com.netjob.guardiannews;
 
+import android.content.SharedPreferences;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -24,7 +26,11 @@ public class SettingsActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.settings_main);
 
-
+            Preference orderbyPref = findPreference(getString(R.string.settings_order_by_key));
+            orderbyPref.setOnPreferenceChangeListener(this);
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String newSummaryValue = preferences.getString(orderbyPref.getKey(), "");
+            onPreferenceChange(orderbyPref, newSummaryValue);
 
         }
 
@@ -32,11 +38,8 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
 
-
-
-
-
-            return false;
+            preference.setSummary(newValue.toString());
+            return true;
         }
     }
 
