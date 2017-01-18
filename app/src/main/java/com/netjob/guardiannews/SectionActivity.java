@@ -5,12 +5,15 @@ import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -180,11 +183,14 @@ public class SectionActivity extends AppCompatActivity implements LoaderManager.
 
             URL url;
 
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+            String orderByPref = sharedPreferences.getString(getContext().getString(R.string.settings_order_by_key), "");
+
             if (mUserSearchInput != null) {
-                url = QueryUtils.buildSearchUrl(mSectionId, mUserSearchInput, "newest");
+                url = QueryUtils.buildSearchUrl(mSectionId, mUserSearchInput, orderByPref);
                 mUserSearchInput = null;
             } else {
-                url = QueryUtils.buildSectionUrl(mSectionId, "newest");
+                url = QueryUtils.buildSectionUrl(mSectionId, orderByPref);
             }
             return QueryUtils.makeHttpUrlRequest(url);
         }
