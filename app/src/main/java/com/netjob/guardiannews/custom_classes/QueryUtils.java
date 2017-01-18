@@ -180,9 +180,7 @@ public class QueryUtils {
                     } else {
                         authorPhotoUrl = null;
                     }
-
                 }
-
 
                 String thumbnailString = fields.getString("thumbnail");
                 String articleBody = fields.getString("bodyText");

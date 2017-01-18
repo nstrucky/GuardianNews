@@ -3,13 +3,19 @@ package com.netjob.guardiannews;
 import android.app.LoaderManager;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.netjob.guardiannews.custom_classes.NewsItem;
 import com.netjob.guardiannews.custom_classes.NewsItemAdapter;
@@ -26,19 +32,23 @@ import java.util.List;
 public class SectionActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<NewsItem>> {
 
 
+    private final String LOG_TAG = "SectionActivity";
+
+    static String mSectionId;
     ListView mNewsListView;
     List<NewsItem> mNewsItems;
     NewsItemAdapter mNewsItemAdapter;
-    static String mSectionId;
+    ProgressBar mProgressBar;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_section);
 
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar_section);
 
         mNewsListView = (ListView) findViewById(R.id.listview_sections);
-
         mNewsItems = new ArrayList<>();
 
         mNewsItemAdapter = new NewsItemAdapter(this, mNewsItems);
@@ -51,6 +61,18 @@ public class SectionActivity extends AppCompatActivity implements LoaderManager.
         }
 
         startLoader(1);
+
+        mNewsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                NewsItem currentNewsItem = (NewsItem) mNewsItemAdapter.getItem(position);
+                String urlString = currentNewsItem.getArticleUrl();
+                Uri uri = Uri.parse(urlString);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+
+            }
+        });
 
     }
 
@@ -85,19 +107,18 @@ public class SectionActivity extends AppCompatActivity implements LoaderManager.
     @Override
     public void onLoadFinished(Loader<List<NewsItem>> loader, List<NewsItem> newsItems) {
 
+        mProgressBar.setVisibility(View.GONE);
         mNewsItemAdapter.clear();
         if (newsItems != null) {
             mNewsItemAdapter.addAll(newsItems);
 
         }
-
     }
 
     @Override
     public void onLoaderReset(Loader<List<NewsItem>> loader) {
 
     }
-
 
     private static class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
 
