@@ -36,21 +36,18 @@ import java.util.List;
 
 public class SectionActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<NewsItem>> {
 
-
     private final String LOG_TAG = "SectionActivity";
 
-    static String mSectionId;
-    ListView mNewsListView;
-    List<NewsItem> mNewsItems;
-    NewsItemAdapter mNewsItemAdapter;
-    ProgressBar mProgressBar;
-    ImageButton mSearchButton;
-    Button mTryAgainButton;
-    EditText mSearchBox;
-    TextView mEmptyListText;
-    static String mUserSearchInput = null;
-
-
+    protected static String mSectionId;
+    protected static String mUserSearchInput = null;
+    private ListView mNewsListView;
+    private List<NewsItem> mNewsItems;
+    private NewsItemAdapter mNewsItemAdapter;
+    private ProgressBar mProgressBar;
+    private ImageButton mSearchButton;
+    private Button mTryAgainButton;
+    private EditText mSearchBox;
+    private TextView mEmptyListText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,17 +59,6 @@ public class SectionActivity extends AppCompatActivity implements LoaderManager.
         mSearchBox = (EditText) findViewById(R.id.editText_section_search);
         mEmptyListText = (TextView) findViewById(R.id.textView_emptyList);
         mTryAgainButton = (Button) findViewById(R.id.button_tryAgain);
-
-        mSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mNewsItemAdapter.clear();
-                mUserSearchInput = mSearchBox.getText().toString();
-                hideSoftKeyboard();
-                startLoader(2);
-            }
-        });
-
         mNewsListView = (ListView) findViewById(R.id.listview_sections);
         mNewsItems = new ArrayList<>();
 
@@ -97,6 +83,23 @@ public class SectionActivity extends AppCompatActivity implements LoaderManager.
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
 
+            }
+        });
+
+        mSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mNewsItemAdapter.clear();
+                mUserSearchInput = mSearchBox.getText().toString();
+                hideSoftKeyboard();
+                startLoader(2);
+            }
+        });
+
+        mTryAgainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startLoader(2);
             }
         });
 
@@ -134,12 +137,9 @@ public class SectionActivity extends AppCompatActivity implements LoaderManager.
             mProgressBar.setVisibility(View.GONE);
             mEmptyListText.setText(getString(R.string.no_internet_connection));
 
-
         }
 
-
     }
-
 
     @Override
     public Loader<List<NewsItem>> onCreateLoader(int id, Bundle args) {
@@ -189,7 +189,6 @@ public class SectionActivity extends AppCompatActivity implements LoaderManager.
             return QueryUtils.makeHttpUrlRequest(url);
         }
     }
-
 
     private String getActivityTitleString(String sectionId) {
 
