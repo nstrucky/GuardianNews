@@ -35,6 +35,7 @@ public class NewsItemAdapter extends ArrayAdapter {
         ViewHolder viewHolder = new ViewHolder();
         NewsItem currentNewsItem = (NewsItem) getItem(position);
         Bitmap authorPhoto = currentNewsItem.getAuthorPhoto();
+        String authorName = currentNewsItem.getAuthorName();
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_article, null, false);
@@ -57,7 +58,11 @@ public class NewsItemAdapter extends ArrayAdapter {
         viewHolder.mPublicationTextView.setText(currentNewsItem.getPublicationDate());
         viewHolder.mArticleBodyTextView.setText(currentNewsItem.getArticleBody());
 
-        viewHolder.mBylineTextView.setText(currentNewsItem.getAuthorName());
+        if (authorName != null) {
+            viewHolder.mBylineTextView.setText(currentNewsItem.getAuthorName());
+        } else {
+            viewHolder.mBylineTextView.setText(parent.getResources().getString(R.string.no_author_info));
+        }
 
         if (authorPhoto != null) {
             viewHolder.mBylineImageView.setImageBitmap(authorPhoto);

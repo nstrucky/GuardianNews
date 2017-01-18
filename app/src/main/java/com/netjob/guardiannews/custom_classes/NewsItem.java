@@ -34,7 +34,13 @@ public class NewsItem {
 
     private String summarizeArticleBody(String body) {
 
-        String sub = body.substring(0, 450).concat("...");
+        String sub;
+        if (body.length() > 450) {
+            sub = body.substring(0, 450).concat("...");
+        } else {
+            sub = "";
+        }
+
         return sub;
     }
 

@@ -1,47 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-
+    android:layout_height="match_parent">
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/editText_section_search"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:hint="@string/search_button_hint" />
-
-        <ImageButton
-            android:id="@+id/image_button_section_search"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_menu_manage" />
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editText_section_search"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:hint="@string/search_button_hint" />
+
+            <ImageButton
+                android:id="@+id/image_button_section_search"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_menu_manage" />
+
+        </LinearLayout>
+
+
+
+        <ListView
+            android:id="@+id/listview_sections"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ListView>
+
 
     </LinearLayout>
 
-    <ProgressBar
+
+    <Button
+        android:id="@+id/button_tryAgain"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/progressBar_section"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:layout_gravity="center"
-        style="@style/Widget.AppCompat.ProgressBar"/>
+        android:text="@string/try_again"/>
 
-    <ListView
-        android:id="@+id/listview_sections"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/textView_emptyList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/button_tryAgain"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="@string/emptylist_textview" />
 
-    </ListView>
+    <ProgressBar
+        android:id="@+id/progressBar_section"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/textView_emptyList"/>
 
 
-</LinearLayout>
+</RelativeLayout>

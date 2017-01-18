@@ -73,6 +73,7 @@ public class QueryUtils {
                     .appendQueryParameter(PARAM_SECTION, sectionId)
                     .appendQueryParameter(PARAM_ORDER_BY, orderBy)
                     .appendQueryParameter(PARAM_SHOWFIELDS, fieldsToInclude)
+                    .appendQueryParameter(PARAM_SHOWTAGS, tagsToInclude)
                     .build();
 
         } else {
@@ -81,6 +82,7 @@ public class QueryUtils {
                     .appendQueryParameter(PARAM_APIKEY, apiKey)
                     .appendQueryParameter(PARAM_ORDER_BY, orderBy)
                     .appendQueryParameter(PARAM_SHOWFIELDS, fieldsToInclude)
+                    .appendQueryParameter(PARAM_SHOWTAGS, tagsToInclude)
                     .build();
         }
 
@@ -172,15 +174,20 @@ public class QueryUtils {
 
                 JSONObject newsItem = results.getJSONObject(i);
                 JSONObject fields = newsItem.getJSONObject("fields");
-                JSONArray tagsArray = newsItem.getJSONArray("tags");
-                if (tagsArray.length() > 0) {
-                    JSONObject tags = tagsArray.getJSONObject(0);
-                    if (tags.has("bylineImageUrl") && !tags.isNull("bylineImageUrl")) {
-                        authorPhotoUrl = tags.getString("bylineImageUrl");
-                    } else {
-                        authorPhotoUrl = null;
+
+                if (!newsItem.isNull("tags") && newsItem.has("tags")) {
+                    JSONArray tagsArray = newsItem.getJSONArray("tags");
+                    if (tagsArray.length() > 0) {
+                        JSONObject tags = tagsArray.getJSONObject(0);
+                        if (tags.has("bylineImageUrl") && !tags.isNull("bylineImageUrl")) {
+                            authorPhotoUrl = tags.getString("bylineImageUrl");
+                        } else {
+                            authorPhotoUrl = null;
+                        }
                     }
                 }
+
+
 
                 String thumbnailString = fields.getString("thumbnail");
                 String articleBody = fields.getString("bodyText");
@@ -188,7 +195,7 @@ public class QueryUtils {
                 if (fields.has("byline") && !fields.isNull("byline")) {
                     authorName = fields.getString("byline");
                 } else {
-                    authorName = "TODO: Byline";
+                    authorName = null;
                 }
 
                 String articleTitle = newsItem.getString("webTitle");
