@@ -168,37 +168,40 @@ public class QueryUtils {
             for (int i = 0; i < results.length(); i++) {
 
                 String authorPhotoUrl = null;
-                String authorBio = "";
-                Bitmap authorPhoto = null;
+                String authorName;
 
                 JSONObject newsItem = results.getJSONObject(i);
                 JSONObject fields = newsItem.getJSONObject("fields");
                 JSONArray tagsArray = newsItem.getJSONArray("tags");
                 if (tagsArray.length() > 0) {
                     JSONObject tags = tagsArray.getJSONObject(0);
-                     authorPhotoUrl = tags.getString("bylineImageUrl");
-                     authorBio = tags.getString("bio");
+                    if (tags.has("bylineImageUrl") && !tags.isNull("bylineImageUrl")) {
+                        authorPhotoUrl = tags.getString("bylineImageUrl");
+                    } else {
+                        authorPhotoUrl = null;
+                    }
+
                 }
 
 
                 String thumbnailString = fields.getString("thumbnail");
                 String articleBody = fields.getString("bodyText");
-                String authorName = fields.getString("byline");
 
-
+                if (fields.has("byline") && !fields.isNull("byline")) {
+                    authorName = fields.getString("byline");
+                } else {
+                    authorName = "TODO: Byline";
+                }
 
                 String articleTitle = newsItem.getString("webTitle");
                 String articleUrl = newsItem.getString("webUrl");
                 String publicationDate = newsItem.getString("webPublicationDate");
 
                 Bitmap thumbnail = getImageBitmap(thumbnailString);
-                if (authorPhotoUrl != null) {
-                    authorPhoto = getImageBitmap(authorPhotoUrl);
-                }
-
+                Bitmap authorPhoto = getImageBitmap(authorPhotoUrl);
 
                 NewsItem listNewsItem = new NewsItem(thumbnail, authorPhoto, articleTitle,
-                        articleUrl, articleBody, authorName, publicationDate, authorBio);
+                        articleUrl, articleBody, authorName, publicationDate);
 
                 newsItems.add(listNewsItem);
             }

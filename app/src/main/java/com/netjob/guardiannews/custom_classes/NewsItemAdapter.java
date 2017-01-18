@@ -1,6 +1,8 @@
 package com.netjob.guardiannews.custom_classes;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +34,7 @@ public class NewsItemAdapter extends ArrayAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder = new ViewHolder();
         NewsItem currentNewsItem = (NewsItem) getItem(position);
+        Bitmap authorPhoto = currentNewsItem.getAuthorPhoto();
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_article, null, false);
@@ -39,7 +42,6 @@ public class NewsItemAdapter extends ArrayAdapter {
             viewHolder.mArticleTitleTextView = (TextView) convertView.findViewById(R.id.textView_article_title);
             viewHolder.mPublicationTextView = (TextView) convertView.findViewById(R.id.textView_publicationDate);
             viewHolder.mArticleBodyTextView = (TextView) convertView.findViewById(R.id.textView_article_body);
-            viewHolder.mBioTextView = (TextView) convertView.findViewById(R.id.textView_bio);
             viewHolder.mBylineTextView = (TextView) convertView.findViewById(R.id.textView_byline);
             viewHolder.mBylineImageView = (ImageView) convertView.findViewById(R.id.imageView_bylineImage);
             viewHolder.mArticleThumbnailImageView = (ImageView) convertView.findViewById(R.id.imageView_article_thumbnail);
@@ -54,9 +56,14 @@ public class NewsItemAdapter extends ArrayAdapter {
         viewHolder.mArticleTitleTextView.setText(currentNewsItem.getArticleTitle());
         viewHolder.mPublicationTextView.setText(currentNewsItem.getPublicationDate());
         viewHolder.mArticleBodyTextView.setText(currentNewsItem.getArticleBody());
-        viewHolder.mBioTextView.setText("TODO BIO HERE");
+
         viewHolder.mBylineTextView.setText(currentNewsItem.getAuthorName());
-        viewHolder.mBylineImageView.setImageBitmap(currentNewsItem.getAuthorPhoto());
+
+        if (authorPhoto != null) {
+            viewHolder.mBylineImageView.setImageBitmap(authorPhoto);
+        } else {
+            viewHolder.mBylineImageView.setImageResource(R.drawable.ic_assignment_ind_black_24dp);
+        }
         viewHolder.mArticleThumbnailImageView.setImageBitmap(currentNewsItem.getThumbnailBitmap());
 
 
