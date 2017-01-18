@@ -15,7 +15,6 @@
     <string name="loading">Loading...</string>
 
 
-
     <string name="artanddesign" translatable="false">artanddesign</string>
     <string name="artanddesign_title">Art and design</string>
 
@@ -41,5 +40,22 @@
 
 
     <string name="emptylist_textview">No articles found related to search terms :(</string>
+    
+
+    <string name="settings_order_by_title">Organize Results By</string>
+    <string name="settings_order_by_key" translatable="false">order-by</string>
+
+    <string name="settings_order_by_default" translatable="false">newest</string>
+
+    <string name="settings_order_by_newest_label">Newest</string>
+    <string name="settings_order_by_newest_value" translatable="false">newest</string>
+
+    <string name="settings_order_by_relevance_label">Relevance</string>
+    <string name="settings_order_by_relevance_value" translatable="false">relevance</string>
+
+
+
+    
+
 
 </resources>
