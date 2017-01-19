@@ -36,6 +36,7 @@ public class NewsItemAdapter extends ArrayAdapter {
         Bitmap authorPhoto = currentNewsItem.getAuthorPhoto();
         Bitmap thumbnail = currentNewsItem.getThumbnailBitmap();
         String authorName = currentNewsItem.getAuthorName();
+        String sectionName = currentNewsItem.getSection();
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_article, null, false);
@@ -46,6 +47,7 @@ public class NewsItemAdapter extends ArrayAdapter {
             viewHolder.mBylineTextView = (TextView) convertView.findViewById(R.id.textView_byline);
             viewHolder.mBylineImageView = (ImageView) convertView.findViewById(R.id.imageView_bylineImage);
             viewHolder.mArticleThumbnailImageView = (ImageView) convertView.findViewById(R.id.imageView_article_thumbnail);
+            viewHolder.mSectionName = (TextView) convertView.findViewById(R.id.textView_section_title);
 
             convertView.setTag(viewHolder);
 
@@ -57,6 +59,11 @@ public class NewsItemAdapter extends ArrayAdapter {
         viewHolder.mArticleTitleTextView.setText(currentNewsItem.getArticleTitle());
         viewHolder.mPublicationTextView.setText(currentNewsItem.getPublicationDate());
         viewHolder.mArticleBodyTextView.setText(currentNewsItem.getArticleBody());
+
+        if (sectionName != null) {
+            viewHolder.mSectionName.setText(sectionName);
+        }
+
 
         if (authorName != null) {
             viewHolder.mBylineTextView.setText(currentNewsItem.getAuthorName());

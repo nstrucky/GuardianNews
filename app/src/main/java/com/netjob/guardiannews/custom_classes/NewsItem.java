@@ -16,10 +16,11 @@ public class NewsItem {
     String mArticleUrl; //webUrl
     String mAuthorName; //fields --> byline
     String mPublicationDate; //webPublicationDate
+    String mSection;
 
     public NewsItem(Bitmap thumbnailBitmap, Bitmap authorPhoto, String articleTitle,
                     String articleUrl, String articleBody, String authorName,
-                    String publicationDate) {
+                    String publicationDate, String section) {
 
         mThumbnailBitmap = thumbnailBitmap;
         mAuthorPhoto = authorPhoto;
@@ -28,6 +29,7 @@ public class NewsItem {
         mArticleUrl = articleUrl;
         mAuthorName = authorName;
         mPublicationDate = publicationDate;
+        mSection = section;
 
     }
 
@@ -98,6 +100,14 @@ public class NewsItem {
 
     public void setPublicationDate(String date) {
         mPublicationDate = date;
+    }
+
+    public String getSection() {
+        return mSection;
+    }
+
+    public void setSection(String section) {
+        mSection = section;
     }
 
 

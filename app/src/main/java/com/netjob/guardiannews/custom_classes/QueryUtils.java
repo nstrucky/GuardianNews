@@ -190,9 +190,14 @@ public class QueryUtils {
                 String authorPhotoUrl = null;
                 String authorName;
                 String thumbnailString = null;
+                String section = null;
 
                 JSONObject newsItem = results.getJSONObject(i);
                 JSONObject fields = newsItem.getJSONObject("fields");
+
+                if (!newsItem.isNull("sectionName") && newsItem.has("sectionName")) {
+                    section = newsItem.getString("sectionName");
+                }
 
                 if (!newsItem.isNull("tags") && newsItem.has("tags")) {
                     JSONArray tagsArray = newsItem.getJSONArray("tags");
@@ -226,7 +231,7 @@ public class QueryUtils {
                 Bitmap authorPhoto = getImageBitmap(authorPhotoUrl);
 
                 NewsItem listNewsItem = new NewsItem(thumbnail, authorPhoto, articleTitle,
-                        articleUrl, articleBody, authorName, publicationDate);
+                        articleUrl, articleBody, authorName, publicationDate, section);
 
                 newsItems.add(listNewsItem);
             }
