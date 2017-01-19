@@ -2,7 +2,6 @@ package com.netjob.guardiannews.custom_classes;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,10 +73,6 @@ public class NewsItemAdapter extends ArrayAdapter {
         if (thumbnail != null) {
             viewHolder.mArticleThumbnailImageView.setImageBitmap(currentNewsItem.getThumbnailBitmap());
         }
-
-
-
-
 
         return convertView;
     }

@@ -1,10 +1,8 @@
 package com.netjob.guardiannews.custom_classes;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Bundle;
 import android.util.Log;
 
 import org.json.JSONArray;

@@ -39,8 +39,6 @@ import java.util.List;
 
 public class SectionActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<NewsItem>> {
 
-    private final String LOG_TAG = "SectionActivity";
-
     protected static String mSectionId;
     protected static String mUserSearchInput = null;
     private ListView mNewsListView;

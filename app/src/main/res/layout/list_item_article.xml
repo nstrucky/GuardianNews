@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
-                android:src="@drawable/ic_menu_camera" />
+                android:src="@drawable/ic_query_builder_black_24dp" />
 
             <TextView
                 android:id="@+id/textView_publicationDate"
@@ -49,8 +49,8 @@
                 android:id="@+id/imageView_article_thumbnail"
                 android:layout_width="225dp"
                 android:layout_height="135dp"
-
                 android:layout_gravity="center_horizontal" />
+
         </LinearLayout>
 
 
@@ -74,7 +74,6 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="bottom"
-
             />
 
         <TextView
@@ -82,7 +81,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="normal|italic" />
-
 
     </LinearLayout>
 

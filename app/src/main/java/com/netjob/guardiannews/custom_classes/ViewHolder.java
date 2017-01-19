@@ -13,7 +13,6 @@ public class ViewHolder {
     TextView mPublicationTextView;
     TextView mArticleBodyTextView;
     TextView mBylineTextView;
-    TextView mBioTextView;
     ImageView mBylineImageView;
     ImageView mArticleThumbnailImageView;
 

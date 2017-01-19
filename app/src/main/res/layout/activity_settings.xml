@@ -12,9 +12,9 @@
 
 
     <fragment
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/NewsPreferenceFragment_1"
-        android:name="com.netjob.guardiannews.SettingsActivity$NewsPreferenceFragment"/>
+        android:name="com.netjob.guardiannews.SettingsActivity$NewsPreferenceFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </RelativeLayout>
