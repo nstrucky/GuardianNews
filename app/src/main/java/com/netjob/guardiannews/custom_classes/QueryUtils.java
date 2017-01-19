@@ -191,6 +191,7 @@ public class QueryUtils {
 
                 String authorPhotoUrl = null;
                 String authorName;
+                String thumbnailString = null;
 
                 JSONObject newsItem = results.getJSONObject(i);
                 JSONObject fields = newsItem.getJSONObject("fields");
@@ -207,9 +208,10 @@ public class QueryUtils {
                     }
                 }
 
+                if (!fields.isNull("thumbnail") && fields.has("thumbnail")) {
+                    thumbnailString = fields.getString("thumbnail");
+                }
 
-
-                String thumbnailString = fields.getString("thumbnail");
                 String articleBody = fields.getString("bodyText");
 
                 if (fields.has("byline") && !fields.isNull("byline")) {

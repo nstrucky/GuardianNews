@@ -35,6 +35,7 @@ public class NewsItemAdapter extends ArrayAdapter {
         ViewHolder viewHolder = new ViewHolder();
         NewsItem currentNewsItem = (NewsItem) getItem(position);
         Bitmap authorPhoto = currentNewsItem.getAuthorPhoto();
+        Bitmap thumbnail = currentNewsItem.getThumbnailBitmap();
         String authorName = currentNewsItem.getAuthorName();
 
         if (convertView == null) {
@@ -69,7 +70,12 @@ public class NewsItemAdapter extends ArrayAdapter {
         } else {
             viewHolder.mBylineImageView.setImageResource(R.drawable.ic_assignment_ind_black_24dp);
         }
-        viewHolder.mArticleThumbnailImageView.setImageBitmap(currentNewsItem.getThumbnailBitmap());
+
+        if (thumbnail != null) {
+            viewHolder.mArticleThumbnailImageView.setImageBitmap(currentNewsItem.getThumbnailBitmap());
+        }
+
+
 
 
 

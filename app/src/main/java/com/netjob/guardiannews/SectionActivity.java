@@ -146,7 +146,10 @@ public class SectionActivity extends AppCompatActivity implements LoaderManager.
                 url = QueryUtils.buildSearchUrl(mSectionId, mUserSearchInput, orderByPref);
                 mUserSearchInput = null;
             } else {
-                url = QueryUtils.buildSectionUrl(mSectionId, orderByPref);
+                //if no search is performed it would not make sense to organize by relevance
+                //so this defaults to newest
+                url = QueryUtils.buildSectionUrl(mSectionId,
+                        getContext().getString(R.string.settings_order_by_default));
             }
             return QueryUtils.makeHttpUrlRequest(url);
         }

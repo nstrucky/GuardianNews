@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity
         LoaderManager.LoaderCallbacks<List<NewsItem>> {
 
 
-    protected static String mUserSearchInput;
+    protected static String mUserSearchInput = null;
     private ImageButton mSearchButton;
     private Button mTryAgainButton;
     private EditText mSearchBox;
@@ -81,7 +81,6 @@ public class MainActivity extends AppCompatActivity
         mEmptyListText = (TextView) findViewById(R.id.textView_emptyList_general);
         mNewsItemListView = (ListView) findViewById(R.id.listview_general);
 
-
         mNewsItems = new ArrayList<>();
         mNewsItemAdapter = new NewsItemAdapter(this, mNewsItems);
 
@@ -112,61 +111,6 @@ public class MainActivity extends AppCompatActivity
         });
 
     }
-
-
-    private void search() {
-        mNewsItemAdapter.clear();
-        mUserSearchInput = mSearchBox.getText().toString();
-        hideSoftKeyboard();
-        startLoader(2);
-    }
-
-    private void hideSoftKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-    }
-
-    private void goToOnlineArticle(int position) {
-        NewsItem currentNewsItem = (NewsItem) mNewsItemAdapter.getItem(position);
-        String urlString = currentNewsItem.getArticleUrl();
-        Uri uri = Uri.parse(urlString);
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(intent);
-    }
-
-    private void startLoader(int loadMethod) {
-
-
-        ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
-
-        if (networkInfo != null && networkInfo.isConnected() && networkInfo.isAvailable()) {
-            mEmptyListText.setVisibility(View.INVISIBLE);
-            mTryAgainButton.setVisibility(View.GONE);
-            switch (loadMethod) {
-
-                case 1:
-                    getLoaderManager().initLoader(0, null, this);
-
-                    break;
-
-                case 2:
-                    mProgressBar.setVisibility(View.VISIBLE);
-                    getLoaderManager().restartLoader(0, null, this);
-                    break;
-
-            }
-
-        } else {
-            mProgressBar.setVisibility(View.GONE);
-            mEmptyListText.setText(getString(R.string.no_internet_connection));
-
-        }
-
-
-
-    }
-
 
     @Override
     public void onBackPressed() {
@@ -302,5 +246,56 @@ public class MainActivity extends AppCompatActivity
 
             return QueryUtils.makeHttpUrlRequest(url);
         }
+    }
+
+    private void search() {
+        mNewsItemAdapter.clear();
+        mUserSearchInput = mSearchBox.getText().toString();
+        hideSoftKeyboard();
+        startLoader(2);
+    }
+
+    private void hideSoftKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+    }
+
+    private void goToOnlineArticle(int position) {
+        NewsItem currentNewsItem = (NewsItem) mNewsItemAdapter.getItem(position);
+        String urlString = currentNewsItem.getArticleUrl();
+        Uri uri = Uri.parse(urlString);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
+    }
+
+    private void startLoader(int loadMethod) {
+
+
+        ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected() && networkInfo.isAvailable()) {
+            mEmptyListText.setVisibility(View.INVISIBLE);
+            mTryAgainButton.setVisibility(View.GONE);
+            switch (loadMethod) {
+
+                case 1:
+                    getLoaderManager().initLoader(0, null, this);
+
+                    break;
+
+                case 2:
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    getLoaderManager().restartLoader(0, null, this);
+                    break;
+
+            }
+
+        } else {
+            mProgressBar.setVisibility(View.GONE);
+            mEmptyListText.setText(getString(R.string.no_internet_connection));
+
+        }
+
     }
 }
