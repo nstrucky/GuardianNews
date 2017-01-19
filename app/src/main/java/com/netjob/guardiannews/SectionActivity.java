@@ -80,22 +80,14 @@ public class SectionActivity extends AppCompatActivity implements LoaderManager.
         mNewsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                NewsItem currentNewsItem = (NewsItem) mNewsItemAdapter.getItem(position);
-                String urlString = currentNewsItem.getArticleUrl();
-                Uri uri = Uri.parse(urlString);
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-
+                goToOnlineArticle(position);
             }
         });
 
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mNewsItemAdapter.clear();
-                mUserSearchInput = mSearchBox.getText().toString();
-                hideSoftKeyboard();
-                startLoader(2);
+                search();
             }
         });
 
@@ -105,42 +97,6 @@ public class SectionActivity extends AppCompatActivity implements LoaderManager.
                 startLoader(2);
             }
         });
-
-    }
-
-
-    private void hideSoftKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-    }
-
-    private void startLoader(int loadMethod) {
-
-        ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
-
-        if (networkInfo != null && networkInfo.isConnected() && networkInfo.isAvailable()) {
-            mEmptyListText.setVisibility(View.INVISIBLE);
-            mTryAgainButton.setVisibility(View.GONE);
-            switch (loadMethod) {
-
-                case 1:
-                    getLoaderManager().initLoader(0, null, this);
-
-                    break;
-
-                case 2:
-                    mProgressBar.setVisibility(View.VISIBLE);
-                    getLoaderManager().restartLoader(0, null, this);
-                    break;
-
-            }
-
-        } else {
-            mProgressBar.setVisibility(View.GONE);
-            mEmptyListText.setText(getString(R.string.no_internet_connection));
-
-        }
 
     }
 
@@ -194,6 +150,57 @@ public class SectionActivity extends AppCompatActivity implements LoaderManager.
             }
             return QueryUtils.makeHttpUrlRequest(url);
         }
+    }
+
+
+    private void search() {
+        mNewsItemAdapter.clear();
+        mUserSearchInput = mSearchBox.getText().toString();
+        hideSoftKeyboard();
+        startLoader(2);
+    }
+
+    private void goToOnlineArticle(int position) {
+        NewsItem currentNewsItem = (NewsItem) mNewsItemAdapter.getItem(position);
+        String urlString = currentNewsItem.getArticleUrl();
+        Uri uri = Uri.parse(urlString);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
+    }
+
+    private void hideSoftKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+    }
+
+    private void startLoader(int loadMethod) {
+
+        ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected() && networkInfo.isAvailable()) {
+            mEmptyListText.setVisibility(View.INVISIBLE);
+            mTryAgainButton.setVisibility(View.GONE);
+            switch (loadMethod) {
+
+                case 1:
+                    getLoaderManager().initLoader(0, null, this);
+
+                    break;
+
+                case 2:
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    getLoaderManager().restartLoader(0, null, this);
+                    break;
+
+            }
+
+        } else {
+            mProgressBar.setVisibility(View.GONE);
+            mEmptyListText.setText(getString(R.string.no_internet_connection));
+
+        }
+
     }
 
     private String getActivityTitleString(String sectionId) {

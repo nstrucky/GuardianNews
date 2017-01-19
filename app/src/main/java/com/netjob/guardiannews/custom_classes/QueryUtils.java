@@ -61,6 +61,25 @@ public class QueryUtils {
         return url;
     }
 
+    public static URL buildSectionUrl() {
+
+        URL url = null;
+        Uri uri = Uri.parse(BASE_URL).buildUpon()
+                .appendQueryParameter(PARAM_APIKEY, apiKey)
+                .appendQueryParameter(PARAM_SHOWFIELDS, fieldsToInclude)
+                .appendQueryParameter(PARAM_SHOWTAGS, tagsToInclude)
+                .build();
+
+        try {
+            url = new URL(uri.toString());
+
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "buildSectionUrl()", e);
+        }
+
+        return url;
+    }
+
     public static URL buildSearchUrl(String sectionId, String searchQuery, String orderBy) {
 
         URL url = null;
@@ -77,6 +96,7 @@ public class QueryUtils {
                     .build();
 
         } else {
+
             uri = Uri.parse(BASE_URL).buildUpon()
                     .appendQueryParameter(PARAM_QUERY, searchQuery)
                     .appendQueryParameter(PARAM_APIKEY, apiKey)

@@ -6,35 +6,78 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:padding="5dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.netjob.guardiannews.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
-        <EditText
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:hint="@string/search_button_hint"
-            android:id="@+id/editText_general_search"/>
+            android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/image_button_search"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editText_general_search"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:hint="@string/search_button_hint" />
+
+                <ImageButton
+                    android:id="@+id/image_button_search"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_menu_manage" />
+
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/listview_general"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </ListView>
+
+        </LinearLayout>
+
+        <!--Dynamically added/removed based on data-->
+        <Button
+            android:id="@+id/button_tryAgain_general"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_menu_manage" />
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:text="@string/try_again" />
 
+        <TextView
+            android:id="@+id/textView_emptyList_general"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/button_tryAgain_general"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/emptylist_textview" />
 
-    </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progressBar_general"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView_emptyList_general"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center" />
+
+    </RelativeLayout>
 
 
 </LinearLayout>

@@ -1,7 +1,16 @@
 package com.netjob.guardiannews;
 
+import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
+import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.SubMenu;
@@ -14,13 +23,40 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.netjob.guardiannews.custom_classes.NewsItem;
+import com.netjob.guardiannews.custom_classes.NewsItemAdapter;
+import com.netjob.guardiannews.custom_classes.QueryUtils;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        LoaderManager.LoaderCallbacks<List<NewsItem>> {
 
 
-    public static final String SECTION_ID_KEY = "sectionIdKey";
+    protected static String mUserSearchInput;
+    private ImageButton mSearchButton;
+    private Button mTryAgainButton;
+    private EditText mSearchBox;
+    private ProgressBar mProgressBar;
+    private TextView mEmptyListText;
+    private ListView mNewsItemListView;
+    private NewsItemAdapter mNewsItemAdapter;
+    private List<NewsItem> mNewsItems;
+
+    protected static final String SECTION_ID_KEY = "sectionIdKey";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +73,100 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        mSearchButton = (ImageButton) findViewById(R.id.image_button_search);
+        mTryAgainButton = (Button) findViewById(R.id.button_tryAgain_general);
+        mSearchBox = (EditText) findViewById(R.id.editText_general_search);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar_general);
+        mEmptyListText = (TextView) findViewById(R.id.textView_emptyList_general);
+        mNewsItemListView = (ListView) findViewById(R.id.listview_general);
+
+
+        mNewsItems = new ArrayList<>();
+        mNewsItemAdapter = new NewsItemAdapter(this, mNewsItems);
+
+        mNewsItemListView.setEmptyView(mEmptyListText);
+        mNewsItemListView.setAdapter(mNewsItemAdapter);
+
+        startLoader(1);
+
+        mSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                search();
+            }
+        });
+
+        mNewsItemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                goToOnlineArticle(position);
+            }
+        });
+
+        mTryAgainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startLoader(2);
+            }
+        });
+
     }
+
+
+    private void search() {
+        mNewsItemAdapter.clear();
+        mUserSearchInput = mSearchBox.getText().toString();
+        hideSoftKeyboard();
+        startLoader(2);
+    }
+
+    private void hideSoftKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+    }
+
+    private void goToOnlineArticle(int position) {
+        NewsItem currentNewsItem = (NewsItem) mNewsItemAdapter.getItem(position);
+        String urlString = currentNewsItem.getArticleUrl();
+        Uri uri = Uri.parse(urlString);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
+    }
+
+    private void startLoader(int loadMethod) {
+
+
+        ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected() && networkInfo.isAvailable()) {
+            mEmptyListText.setVisibility(View.INVISIBLE);
+            mTryAgainButton.setVisibility(View.GONE);
+            switch (loadMethod) {
+
+                case 1:
+                    getLoaderManager().initLoader(0, null, this);
+
+                    break;
+
+                case 2:
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    getLoaderManager().restartLoader(0, null, this);
+                    break;
+
+            }
+
+        } else {
+            mProgressBar.setVisibility(View.GONE);
+            mEmptyListText.setText(getString(R.string.no_internet_connection));
+
+        }
+
+
+
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -51,19 +180,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
@@ -124,5 +248,59 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public Loader<List<NewsItem>> onCreateLoader(int id, Bundle args) {
+        return new NewsLoaderGeneral(this);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<NewsItem>> loader, List<NewsItem> data) {
+
+        mNewsItemAdapter.clear();
+        mProgressBar.setVisibility(View.GONE);
+        mEmptyListText.setVisibility(View.GONE);
+        if (data != null && !data.isEmpty()) {
+            mNewsItemAdapter.addAll(data);
+        }
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<NewsItem>> loader) {
+
+    }
+
+    private static class NewsLoaderGeneral extends AsyncTaskLoader<List<NewsItem>> {
+
+        public NewsLoaderGeneral(Context context) {
+            super(context);
+        }
+
+        @Override
+        protected void onStartLoading() {
+            super.onStartLoading();
+            forceLoad();
+        }
+
+        @Override
+        public List<NewsItem> loadInBackground() {
+
+            SharedPreferences sharedPreferences = PreferenceManager
+                    .getDefaultSharedPreferences(getContext());
+            String orderByPref = sharedPreferences.getString(
+                    getContext().getString(R.string.settings_order_by_key), "");
+
+            URL url;
+            if (mUserSearchInput !=null) {
+                url = QueryUtils.buildSearchUrl(null, mUserSearchInput, orderByPref);
+                mUserSearchInput = null;
+            } else {
+                url = QueryUtils.buildSectionUrl();
+            }
+
+            return QueryUtils.makeHttpUrlRequest(url);
+        }
     }
 }

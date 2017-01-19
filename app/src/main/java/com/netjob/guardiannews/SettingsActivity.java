@@ -15,8 +15,6 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
     }
 
-
-
     public static class NewsPreferenceFragment extends PreferenceFragment implements
             Preference.OnPreferenceChangeListener {
 
@@ -33,7 +31,6 @@ public class SettingsActivity extends AppCompatActivity {
             onPreferenceChange(orderbyPref, newSummaryValue);
 
         }
-
 
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
